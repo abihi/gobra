@@ -5,16 +5,16 @@ pipeline {
         GOPATH = '/go'
     }
 
-    options {
-        // Set up GitHub credentials
-        checkout([
-            $class: 'GitSCM', 
-            branches: [[name: '*/main']], 
-            userRemoteConfigs: [[url: 'https://github.com/abihi/gobra.git']]
-        ])
-    }
-
     stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Set up GitHub credentials and checkout the code
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/abihi/gobra.git']]])
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
