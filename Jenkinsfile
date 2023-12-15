@@ -3,14 +3,15 @@ pipeline {
 
     environment {
         GOPATH = '/go'
+        PATH = '/usr/local/go/bin:$PATH'
     }
 
     stages {
-        stage('Set Path') {
+        stage('Checkout') {
             steps {
                 script {
-                    // Add the Go binary directory to the PATH
-                    PATH = "$GOPATH/bin:$PATH"
+                    // Set up GitHub credentials and checkout the code
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/abihi/gobra.git']]])
                 }
             }
         }
@@ -18,13 +19,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    dir('.') {
-                        // Download Go modules
-                        sh 'go mod download'
-
-                        // Build the Go app
-                        sh 'CGO_ENABLED=0 GOOS=linux go build -o /go/bin/gobra ./cmd/gobra'
-                    }
+                    // Download Go modules and build the Go app
+                    sh 'CGO_ENABLED=0 GOOS=linux go build -o /go/bin/gobra ./cmd/gobra'
                 }
             }
         }
@@ -32,10 +28,8 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-                    dir('.') {
-                        // Run Go unit tests
-                        sh 'go test ./...'
-                    }
+                    // Run Go unit tests
+                    sh 'go test ./...'
                 }
             }
         }
