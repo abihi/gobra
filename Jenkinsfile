@@ -3,16 +3,16 @@ pipeline {
 
     environment {
         GOPATH = '/go'
-        PATH = '$PATH:$GOPATH/bin'
-
+        PATH+EXTRA = "$GOPATH/bin"
     }
 
     stages {
-        stage('Checkout') {
+        stage('Install Go') {
             steps {
                 script {
-                    // Set up GitHub credentials and checkout the code
-                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/abihi/gobra.git']]])
+                    sh 'curl -fsSL https://get.sdkman.io | bash'
+                    sh 'source "$HOME/.sdkman/bin/sdkman-init.sh"'
+                    sh 'sdk install go'
                 }
             }
         }
@@ -20,8 +20,13 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Download Go modules and build the Go app
-                    sh 'CGO_ENABLED=0 GOOS=linux go build -o /gobra ./cmd/gobra'
+                    dir('.') {
+                        // Download Go modules
+                        sh 'go mod download'
+
+                        // Build the Go app
+                        sh 'CGO_ENABLED=0 GOOS=linux go build -o /go/bin/gobra ./cmd/gobra'
+                    }
                 }
             }
         }
@@ -29,8 +34,10 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-                    // Run Go unit tests
-                    sh 'go test ./...'
+                    dir('.') {
+                        // Run Go unit tests
+                        sh 'go test ./...'
+                    }
                 }
             }
         }
