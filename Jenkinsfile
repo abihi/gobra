@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Download Go modules and build the Go app
-                    sh 'CGO_ENABLED=0 GOOS=linux go build -o /go/bin/gobra ./cmd/gobra'
+                    sh 'CGO_ENABLED=0 GOOS=linux go build -o /gobra ./cmd/gobra'
                 }
             }
         }
