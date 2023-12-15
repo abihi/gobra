@@ -3,16 +3,14 @@ pipeline {
 
     environment {
         GOPATH = '/go'
-        PATH+EXTRA = "$GOPATH/bin"
     }
 
     stages {
-        stage('Install Go') {
+        stage('Set Path') {
             steps {
                 script {
-                    sh 'curl -fsSL https://get.sdkman.io | bash'
-                    sh 'source "$HOME/.sdkman/bin/sdkman-init.sh"'
-                    sh 'sdk install go'
+                    // Add the Go binary directory to the PATH
+                    PATH = "$GOPATH/bin:$PATH"
                 }
             }
         }
