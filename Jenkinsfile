@@ -7,7 +7,7 @@ pipeline {
 
     options {
         // Set up GitHub credentials
-        scm([
+        checkout([
             $class: 'GitSCM', 
             branches: [[name: '*/main']], 
             userRemoteConfigs: [[url: 'https://github.com/abihi/gobra.git']]
