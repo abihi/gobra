@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         GOPATH = '/go'
-        PATH = '/usr/local/go/bin:$PATH'
+         PATH = 'PATH+EXTRA=/usr/sbin:/usr/bin:/sbin:/bin'
     }
 
     stages {
