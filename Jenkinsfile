@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         GOPATH = '/go'
+        PATH = '$PATH:$GOPATH/bin'
+
     }
 
     stages {
