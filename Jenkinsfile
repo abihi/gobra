@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        GOPATH = '/go'
-         PATH = 'PATH+EXTRA=/usr/sbin:/usr/bin:/sbin:/bin'
-    }
-
     stages {
         stage('Checkout') {
             steps {
