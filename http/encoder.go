@@ -7,10 +7,7 @@ import (
 	"net/http"
 )
 
-type encoder struct {
-	logger  http.Handler
-	tracing bool
-}
+type encoder struct{}
 
 // errorResponse will encapsulate errors to be transferred over HTTP.
 type errorResponse struct {
