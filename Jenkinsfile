@@ -14,8 +14,10 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Download Go modules and build the Go app
-                    sh 'CGO_ENABLED=0 GOOS=linux go build -o /go/bin/gobra ./cmd/gobra'
+                    withEnv(['PATH=$PATH:/usr/local/go/bin']) {
+                        // Download Go modules and build the Go app
+                        sh 'CGO_ENABLED=0 GOOS=linux go build -o /go/bin/gobra ./cmd/gobra'
+                    }
                 }
             }
         }
