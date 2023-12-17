@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        GOPATH = '/go'
+        PATH = '/usr/local/go/bin:$PATH'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -14,10 +19,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    withEnv(['PATH=$PATH:/usr/local/go/bin']) {
-                        // Download Go modules and build the Go app
-                        sh 'CGO_ENABLED=0 GOOS=linux go build -o /go/bin/gobra ./cmd/gobra'
-                    }
+                    // Build the Go app
+                    sh 'CGO_ENABLED=0 GOOS=linux go build -o /go/bin/gobra ./cmd/gobra'
                 }
             }
         }
