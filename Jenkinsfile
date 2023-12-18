@@ -6,11 +6,23 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Set up GitHub credentials and checkout the code
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/abihi/gobra.git']]])
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
+                    // Create the output directory within the workspace
+                    sh 'mkdir -p ${WORKSPACE}/output'
+
                     // Build the Go app
-                    sh 'CGO_ENABLED=0 GOOS=linux go build -o /go/bin/gobra ./cmd/gobra'
+                    sh 'CGO_ENABLED=0 GOOS=linux go build -o ${WORKSPACE}/output/gobra ./cmd/gobra'
                 }
             }
         }
