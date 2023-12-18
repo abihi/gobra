@@ -1,16 +1,11 @@
 pipeline {
     agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    // Set up GitHub credentials and checkout the code
-                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/abihi/gobra.git']]])
-                }
-            }
-        }
+    tools {
+        go 'go'
+    }
 
+    stages {
         stage('Build') {
             steps {
                 script {
@@ -39,4 +34,3 @@ pipeline {
         }
     }
 }
-    
